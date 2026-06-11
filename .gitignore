@@ -20,3 +20,7 @@ application-local.yml
 *.iml
 .vscode/
 .DS_Store
+
+# Claude
+.claudeignore
+session-note.md
