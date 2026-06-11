@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: backend
+
+  # ---------- MySQL ----------
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:chatdb}?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DB_USER:devuser}
+    password: ${DB_PASS:devpassword}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # ---------- JPA / Hibernate ----------
+  jpa:
+    hibernate:
+      ddl-auto: validate          # schema 由 init.sql 負責,JPA 只驗證對不對得上
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    show-sql: false               # 想看 SQL 改成 true
+    open-in-view: false           # 關掉,避免 lazy loading 拖到 controller 層
+
+  # ---------- Redis ----------
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+# ---------- JWT (自訂) ----------
+jwt:
+  secret: ${JWT_SECRET:}          # Base64 字串,解碼後 >= 32 bytes
+  expiration-ms: ${JWT_EXPIRATION_MS:86400000}   # 24h
+
+# ---------- Log ----------
+logging:
+  level:
+    com.chun.backend: DEBUG       # 開發期看自己的 log,正式可降成 INFO
