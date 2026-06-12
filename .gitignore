@@ -24,3 +24,5 @@ application-local.yml
 # Claude
 .claudeignore
 session-note.md
+docs/
+CLAUDE.md
