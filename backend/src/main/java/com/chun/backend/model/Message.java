@@ -23,7 +23,7 @@ public class Message {
     @JoinColumn(name = "user_id",  nullable = false)
     private User user;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @Column(nullable = false)
