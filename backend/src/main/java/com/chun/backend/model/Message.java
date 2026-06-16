@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "messages")
-@Getter  @Setter
+@Getter
+@Setter
 public class Message {
 
     @Id
@@ -20,7 +21,7 @@ public class Message {
     private Room room;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id",  nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(nullable = false, columnDefinition = "TEXT")
@@ -31,6 +32,7 @@ public class Message {
 
     @PrePersist
     protected void onCreate() {
-        sentAt = LocalDateTime.now();
+
+        if (sentAt == null) sentAt = LocalDateTime.now();
     }
 }
