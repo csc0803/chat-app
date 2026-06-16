@@ -1,10 +1,14 @@
 package com.chun.backend.model;
 
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
 @Embeddable
+@Getter
+@Setter
 public class RoomMemberId {
     private Long roomId;
     private Long userId;
