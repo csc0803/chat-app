@@ -38,10 +38,12 @@ CREATE TABLE IF NOT EXISTS rooms (
 -- room_members
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS room_members (
-  room_id   BIGINT    NOT NULL,
-  user_id   BIGINT    NOT NULL,
-  is_admin  BOOLEAN   NOT NULL DEFAULT FALSE,
-  joined_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  room_id    BIGINT    NOT NULL,
+  user_id    BIGINT    NOT NULL,
+  is_admin   BOOLEAN   NOT NULL DEFAULT FALSE,
+  joined_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  is_deleted BOOLEAN   NOT NULL DEFAULT FALSE,
+  deleted_at TIMESTAMP NULL,
   PRIMARY KEY (room_id, user_id),
   CONSTRAINT fk_rm_room FOREIGN KEY (room_id) REFERENCES rooms(id)
     ON DELETE CASCADE ON UPDATE CASCADE,

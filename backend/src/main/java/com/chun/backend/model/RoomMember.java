@@ -30,6 +30,12 @@ public class RoomMember {
     @Column(nullable = false)
     private LocalDateTime joinedAt;
 
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
     @PrePersist
     protected void onCreate() {
         joinedAt = LocalDateTime.now();
