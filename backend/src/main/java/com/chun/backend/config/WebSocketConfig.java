@@ -18,10 +18,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-
-        registry.addEndpoint("/ws")        // 客戶端連線的端點
+        registry.addEndpoint("/ws")
                 .setAllowedOriginPatterns("*")
-                .withSockJS();             // 啟用 SockJS fallback
+                .withSockJS();
+        registry.addEndpoint("/ws-stomp")  // 純 WebSocket，供整合測試使用
+                .setAllowedOriginPatterns("*");
     }
 
     @Override
