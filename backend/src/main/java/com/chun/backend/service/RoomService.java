@@ -1,5 +1,6 @@
 package com.chun.backend.service;
 
+import com.chun.backend.dto.RoomResponse;
 import com.chun.backend.exception.RoomNotFoundException;
 import com.chun.backend.exception.UserNotFoundException;
 import com.chun.backend.model.Room;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -26,7 +29,7 @@ public class RoomService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Room createRoom(String roomName, String username) {
+    public RoomResponse createRoom(String roomName, String username) {
         // 1. 查 user
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
@@ -46,11 +49,21 @@ public class RoomService {
         roomMemberRepository.save(roomMember);
 
         // 4. 回傳 room
-        return room;
+        return RoomResponse.from(room);
+    }
+
+    @Transactional(readOnly = true)
+    public List<RoomResponse> getRoomsForUser(String username) {
+        return roomMemberRepository
+                .findByUser_UsernameAndIsDeletedFalseAndRoom_IsDeletedFalseOrderByJoinedAtDesc(username)
+                .stream()
+                .map(RoomMember::getRoom)
+                .map(RoomResponse::from)
+                .collect(Collectors.toList());
     }
 
     @Transactional
-    public Room changeRoomName(Long roomId, String newRoomName, String username) {
+    public RoomResponse changeRoomName(Long roomId, String newRoomName, String username) {
         // 1. 查 user
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
@@ -74,7 +87,7 @@ public class RoomService {
         room.setName(newRoomName);
         room = roomRepository.save(room);
 
-        return room;
+        return RoomResponse.from(room);
     }
 
     @Transactional

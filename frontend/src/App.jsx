@@ -1,10 +1,12 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useParams } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import RoomList from './pages/RoomList';
 import { useAuth } from './hooks/useAuth';
 
-function RoomListPlaceholder() {
-  return <div>房間列表（T31 尚未實作）</div>;
+function ChatRoomPlaceholder() {
+  const { roomId } = useParams();
+  return <div>聊天室 #{roomId}（T33 尚未實作）</div>;
 }
 
 function ProtectedRoute({ children }) {
@@ -24,7 +26,15 @@ function App() {
         path="/rooms"
         element={
           <ProtectedRoute>
-            <RoomListPlaceholder />
+            <RoomList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/rooms/:roomId"
+        element={
+          <ProtectedRoute>
+            <ChatRoomPlaceholder />
           </ProtectedRoute>
         }
       />

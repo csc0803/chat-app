@@ -13,5 +13,6 @@ public interface RoomMemberRepository extends JpaRepository<RoomMember, RoomMemb
     long countByRoom_IdAndIsAdminTrueAndIsDeletedFalse(Long roomId);
     long countByRoom_IdAndIsDeletedFalse(Long roomId);
     Optional<RoomMember> findFirstByRoom_IdAndIsAdminFalseAndIsDeletedFalseOrderByJoinedAtAsc(Long roomId);
+    List<RoomMember> findByUser_UsernameAndIsDeletedFalseAndRoom_IsDeletedFalseOrderByJoinedAtDesc(String username);
 
 }
