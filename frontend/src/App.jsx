@@ -1,13 +1,9 @@
-import { Navigate, Route, Routes, useParams } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import RoomList from './pages/RoomList';
+import ChatRoom from './pages/ChatRoom';
 import { useAuth } from './hooks/useAuth';
-
-function ChatRoomPlaceholder() {
-  const { roomId } = useParams();
-  return <div>聊天室 #{roomId}（T33 尚未實作）</div>;
-}
 
 function ProtectedRoute({ children }) {
   const { isAuthed } = useAuth();
@@ -34,7 +30,7 @@ function App() {
         path="/rooms/:roomId"
         element={
           <ProtectedRoute>
-            <ChatRoomPlaceholder />
+            <ChatRoom />
           </ProtectedRoute>
         }
       />
