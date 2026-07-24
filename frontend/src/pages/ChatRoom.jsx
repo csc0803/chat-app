@@ -16,7 +16,7 @@ export default function ChatRoom() {
         <h1>
           房間 #{roomId}（{connected ? '已連線' : '連線中...'}）
         </h1>
-        <MessageList messages={messages} />
+        <MessageList key={roomId} roomId={roomId} liveMessages={messages} />
         <MessageInput onSend={sendMessage} disabled={!connected} />
       </div>
       <UserList roomId={roomId} />
