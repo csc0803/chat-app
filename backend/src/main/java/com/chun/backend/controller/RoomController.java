@@ -1,6 +1,7 @@
 package com.chun.backend.controller;
 
 import com.chun.backend.dto.ChangeAdminRequest;
+import com.chun.backend.dto.MessageResponse;
 import com.chun.backend.dto.RoomRequest;
 import com.chun.backend.dto.RoomResponse;
 import com.chun.backend.service.MessageService;
@@ -93,11 +94,11 @@ public class RoomController {
     // GET /api/rooms/{roomId}/messages?page=0&size=20
     // 取歷史訊息，需 Bearer，回傳 Page metadata
     @GetMapping("/{roomId}/messages")
-    public ResponseEntity<?> getMessages(
+    public ResponseEntity<Page<MessageResponse>> getMessages(
             @PathVariable Long roomId,
             @PageableDefault(size = 20, sort = "sentAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<?> messages = messageService.getMessages(roomId, pageable);
+        Page<MessageResponse> messages = messageService.getMessages(roomId, pageable);
         return ResponseEntity.ok(messages);
     }
 }
