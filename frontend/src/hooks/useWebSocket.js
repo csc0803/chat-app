@@ -6,8 +6,10 @@ import SockJS from 'sockjs-client';
 export function useWebSocket(roomId, token) {
   const clientRef = useRef(null);
   const subscriptionRef = useRef(null);
+  const usersSubscriptionRef = useRef(null);
   const [connected, setConnected] = useState(false);
   const [messages, setMessages] = useState([]);
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
   useEffect(() => {
     if (!roomId || !token) return;
@@ -27,10 +29,18 @@ export function useWebSocket(roomId, token) {
             setMessages((prev) => [...prev, JSON.parse(frame.body)]);
           }
         );
+        // 訂閱這個 topic 本身會讓後端把這個連線標記為「在這個房間上線」
+        usersSubscriptionRef.current = client.subscribe(
+          `/topic/room.${roomId}.users`,
+          (frame) => {
+            setOnlineUsers(JSON.parse(frame.body).users);
+          }
+        );
       },
 
       onWebSocketClose: () => {
         setConnected(false);
+        setOnlineUsers([]);
       },
 
       onStompError: (frame) => {
@@ -43,6 +53,7 @@ export function useWebSocket(roomId, token) {
 
     return () => {
       subscriptionRef.current?.unsubscribe();
+      usersSubscriptionRef.current?.unsubscribe();
       client.deactivate();
       clientRef.current = null;
     };
@@ -59,5 +70,5 @@ export function useWebSocket(roomId, token) {
     [roomId]
   );
 
-  return { connected, messages, sendMessage };
+  return { connected, messages, onlineUsers, sendMessage };
 }

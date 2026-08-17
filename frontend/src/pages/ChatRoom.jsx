@@ -8,7 +8,7 @@ import UserList from '../components/UserList';
 export default function ChatRoom() {
   const { roomId } = useParams();
   const { token } = useAuth();
-  const { connected, messages, sendMessage } = useWebSocket(roomId, token);
+  const { connected, messages, onlineUsers, sendMessage } = useWebSocket(roomId, token);
 
   return (
     <div style={{ display: 'flex', gap: '1rem' }}>
@@ -19,7 +19,7 @@ export default function ChatRoom() {
         <MessageList key={roomId} roomId={roomId} liveMessages={messages} />
         <MessageInput onSend={sendMessage} disabled={!connected} />
       </div>
-      <UserList roomId={roomId} />
+      <UserList users={onlineUsers} />
     </div>
   );
 }
